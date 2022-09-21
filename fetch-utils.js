@@ -12,7 +12,7 @@ export async function getPlants(name, plantType) {
     // Always apply this to our query
     let query = client
         .from('plants')
-        .select('*')
+        .select('*', { count: 'exact' })
         .limit(50)
         .order('Common_Name');
 

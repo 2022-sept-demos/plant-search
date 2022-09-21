@@ -15,7 +15,7 @@ const searchForm = document.getElementById('search-form');
 
 /* State */
 let error = null;
-// let count = 0;
+let count = 0;
 let plants = [];
 let plantTypes = [];
 /* Events */
@@ -39,6 +39,8 @@ async function findPlants(name, plantType) {
     error = response.error;
     // update plants state
     plants = response.data;
+    // update total db count
+    count = response.count;
 
     displayNotifications();
     displayPlants();
@@ -57,11 +59,12 @@ searchForm.addEventListener('submit', (e) => {
 /* Display Functions */
 function displayNotifications() {
     if (error) {
+        console.error(error);
         notificationDisplay.classList.add('error');
         notificationDisplay.textContent = error.message;
     } else {
         notificationDisplay.classList.remove('error');
-        notificationDisplay.textContent = `Showing ${plants.length} of XX matching plants`;
+        notificationDisplay.textContent = `Showing ${plants.length} of ${count} matching plants`;
     }
 }
 
