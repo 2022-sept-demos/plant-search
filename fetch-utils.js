@@ -8,3 +8,8 @@ export async function getPlants() {
     const response = await client.from('plants').select('*').limit(50);
     return response;
 }
+
+export async function getPlantTypes() {
+    const response = await client.from('plant_types').select('*');
+    return response;
+}

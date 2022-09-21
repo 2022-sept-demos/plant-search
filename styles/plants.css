@@ -28,28 +28,41 @@ button {
 
 .list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-auto-rows: 225px;
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 20px;
 }
 
 .card {
-    background: white;
-    border: 1px solid lightgrey;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
-
     padding: 10px;
+    background: rgb(84, 84, 84);
+    border: 1px solid white;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    color: white;
     text-align: center;
 
     display: grid;
-    align-content: space-between;
+    grid-template-rows: 40%;
     justify-items: center;
+    align-items: center;
+}
+
+.card h2,
+.card p {
+    margin: 0;
+}
+
+.card .icons {
+    font-size: 2em;
+}
+
+.card .latin {
+    font-style: italic;
 }
 
 .card img {
-    width: 72px;
-}
-
-.card h2 {
-    font-size: 1.1em;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
