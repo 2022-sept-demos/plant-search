@@ -1,15 +1,21 @@
 /* Imports */
 import { getPlants, getPlantTypes } from './fetch-utils.js';
-import { renderPlant, renderTypeOption } from './render-utils.js';
+import {
+    renderPlant,
+    renderTypeOption,
+} from './render-utils.js';
 
 /* Get DOM Elements */
-const notificationDisplay = document.getElementById('notification-display');
+const notificationDisplay = document.getElementById(
+    'notification-display'
+);
 const plantList = document.getElementById('plant-list');
 const typeSelect = document.getElementById('type-select');
+const searchForm = document.getElementById('search-form');
 
 /* State */
 let error = null;
-let count = 0;
+// let count = 0;
 let plants = [];
 let plantTypes = [];
 /* Events */
@@ -25,9 +31,9 @@ window.addEventListener('load', async () => {
     displayTypeOptions();
 });
 
-async function findPlants() {
+async function findPlants(name, plantType) {
     // call a function and get 100 plants
-    const response = await getPlants();
+    const response = await getPlants(name, plantType);
 
     // keep in errors
     error = response.error;
@@ -38,6 +44,16 @@ async function findPlants() {
     displayPlants();
 }
 
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(searchForm);
+    const name = formData.get('name');
+    const type = formData.get('type');
+
+    findPlants(name, type);
+});
+
 /* Display Functions */
 function displayNotifications() {
     if (error) {
@@ -45,6 +61,7 @@ function displayNotifications() {
         notificationDisplay.textContent = error.message;
     } else {
         notificationDisplay.classList.remove('error');
+        notificationDisplay.textContent = `Showing ${plants.length} of XX matching plants`;
     }
 }
 

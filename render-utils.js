@@ -23,7 +23,8 @@ export function renderPlant(plant) {
 
     let icon = '';
 
-    const conditionsString = plant.Suitable_Site_Conditions || '';
+    const conditionsString =
+        plant.Suitable_Site_Conditions || '';
     const conditions = conditionsString.split(';');
 
     for (const condition of conditions) {
