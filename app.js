@@ -126,5 +126,7 @@ function displayMorePlants(morePlants) {
         lastEl = plantEl;
     }
 
-    observer.observe(lastEl);
+    if (plants.length < count) {
+        observer.observe(lastEl);
+    }
 }
