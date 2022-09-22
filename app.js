@@ -1,9 +1,6 @@
 /* Imports */
 import { getPlants, getPlantTypes } from './fetch-utils.js';
-import {
-    renderPlant,
-    renderTypeOption,
-} from './render-utils.js';
+import { renderPlant, renderTypeOption } from './render-utils.js';
 
 /* Get DOM Elements */
 const notificationDisplay = document.getElementById(
@@ -12,12 +9,29 @@ const notificationDisplay = document.getElementById(
 const plantList = document.getElementById('plant-list');
 const typeSelect = document.getElementById('type-select');
 const searchForm = document.getElementById('search-form');
+const morePlantsButton = document.getElementById('more-plants-button');
 
 /* State */
 let error = null;
 let count = 0;
 let plants = [];
 let plantTypes = [];
+
+// let filterName = '';
+// let filterType = '';
+// let page = 1;
+// let pageSize = 25;
+
+let filter = {
+    name: '',
+    type: '',
+};
+
+let paging = {
+    page: 1,
+    pageSize: 25,
+};
+
 /* Events */
 
 // window load event
@@ -31,9 +45,26 @@ window.addEventListener('load', async () => {
     displayTypeOptions();
 });
 
-async function findPlants(name, plantType) {
-    // call a function and get 100 plants
-    const response = await getPlants(name, plantType);
+morePlantsButton.addEventListener('click', () => {
+    getMorePlants();
+});
+
+async function getMorePlants() {
+    paging.page++;
+    const response = await getPlants(filter, paging);
+
+    error = response.error;
+    count = response.count;
+    const morePlants = response.data;
+    plants = plants.concat(morePlants);
+
+    displayNotifications();
+    displayMorePlants(morePlants);
+}
+
+async function findPlants() {
+    // call a function and get plants
+    const response = await getPlants(filter, paging);
 
     // keep in errors
     error = response.error;
@@ -50,10 +81,10 @@ searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const formData = new FormData(searchForm);
-    const name = formData.get('name');
-    const type = formData.get('type');
+    filter.name = formData.get('name');
+    filter.type = formData.get('type');
 
-    findPlants(name, type);
+    findPlants();
 });
 
 /* Display Functions */
@@ -78,8 +109,11 @@ function displayTypeOptions() {
 
 function displayPlants() {
     plantList.innerHTML = '';
+    displayMorePlants(plants);
+}
 
-    for (const plant of plants) {
+function displayMorePlants(morePlants) {
+    for (const plant of morePlants) {
         const plantEl = renderPlant(plant);
         plantList.append(plantEl);
     }
