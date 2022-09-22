@@ -83,7 +83,8 @@ searchForm.addEventListener('submit', (e) => {
     const formData = new FormData(searchForm);
     filter.name = formData.get('name');
     filter.type = formData.get('type');
-
+    // new search criteria, reset page to 1
+    paging.page = 1;
     findPlants();
 });
 
