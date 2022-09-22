@@ -9,7 +9,6 @@ const notificationDisplay = document.getElementById(
 const plantList = document.getElementById('plant-list');
 const typeSelect = document.getElementById('type-select');
 const searchForm = document.getElementById('search-form');
-const morePlantsButton = document.getElementById('more-plants-button');
 
 /* State */
 let error = null;
@@ -45,8 +44,14 @@ window.addEventListener('load', async () => {
     displayTypeOptions();
 });
 
-morePlantsButton.addEventListener('click', () => {
-    getMorePlants();
+const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+        if (entry.isIntersecting) {
+            observer.unobserve(entry.target);
+            // do magic here
+            getMorePlants();
+        }
+    }
 });
 
 async function getMorePlants() {
@@ -114,8 +119,12 @@ function displayPlants() {
 }
 
 function displayMorePlants(morePlants) {
+    let lastEl = null;
     for (const plant of morePlants) {
         const plantEl = renderPlant(plant);
         plantList.append(plantEl);
+        lastEl = plantEl;
     }
+
+    observer.observe(lastEl);
 }
